@@ -15,19 +15,20 @@ import {
 } from 'react-native'; 
 import { RNCamera } from 'react-native-camera';
 import Svg,
-  {G,Path,Defs, Stop,LinearGradient
+  {G,Path, 
   } from 'react-native-svg'
-import Animated, { useSharedValue,
-  useAnimatedScrollHandler,Extrapolate,useAnimatedProps,interpolate,multiply,
-  useAnimatedStyle,Easing, withTiming, withRepeat, withSpring ,withDelay} from 'react-native-reanimated';
+import Animated, { useSharedValue, 
+  useAnimatedStyle,Easing, withTiming,
+   withRepeat, withSpring ,withDelay} from 'react-native-reanimated';
  
-import Square from './square'; 
+import Square from './src/components/square'; 
   
 
 const App =() => {
   const camref=useRef(null)
   const[ capturedImage,setCaptureImage]=useState('')
   const offset = useSharedValue(6);  
+  const scaleFocus = useSharedValue(2.3);  
   const offsetX = useSharedValue(0);  
   const offsetY = useSharedValue(0);  
   const moveTextToLeft=useSharedValue(0)
@@ -47,6 +48,12 @@ const App =() => {
         transform: [{ scale: offset.value }],   
     };
   });
+  const focusScale= useAnimatedStyle(() => { 
+    return { 
+        transform: [{ scale: scaleFocus.value }],   
+    };
+  });
+  
   const animated3= useAnimatedStyle(() => { 
     return { 
         transform: [{ rotateX:  `${offsetX.value}rad` }],   
@@ -175,7 +182,7 @@ const App =() => {
        >
      
           <View style={{
-            height:'10%',
+            height:'12%',
             width:'100%',
             backgroundColor:'#000',
             alignItems:'flex-start',
@@ -195,17 +202,29 @@ const App =() => {
          style={[
            {
              width:'100%',
-             height:'50%', 
+             height:'45%', 
+             justifyContent:'center',
+             alignItems:'center', 
+             
+           }]}
+         >
+ 
+           <Animated.View  
+           style={[
+           {
+             width:'100%',
+             height:'100%', 
              justifyContent:'center',
              alignItems:'center', 
              
            }
-         ,animated2]}
-         >
+         ,animated2]}>
+ 
   
  <Svg width="555" height="172" viewBox="0 0 556 172" fill="none" xmlns="http://www.w3.org/2000/svg">
 <Path fillRule="evenodd" clipRule="evenodd" d="M555 0H0V172H555V0ZM278 146C311.137 146 338 119.137 338 86C338 52.8633 311.137 26 278 26C244.863 26 218 52.8633 218 86C218 119.137 244.863 146 278 146Z" fill="black"/>
 </Svg>
+ 
 <Animated.View style={[{
              width:100,
              height:100,
@@ -214,9 +233,7 @@ const App =() => {
              justifyContent:'center',
              alignItems:'center',
            },borderStyle]}>
-            {new Array(totalBlocks.value).fill(0).map((_, index) => {
-        return <Square  key={index} progress={progress} index={index} N={totalBlocks.value}/>;
-      })}
+            
              
             
 
@@ -291,10 +308,32 @@ const App =() => {
  
         
  
+           </Animated.View>
+
+
+           <Animated.View style={[{
+             width:100,
+             height:100,
+             borderRadius:10,  
+             position:'absolute',
+             justifyContent:'center',
+             alignItems:'center', 
+             
+           },focusScale]}>
+            {new Array(totalBlocks.value).fill(0).map((_, index) => {
+        return <Square  key={index} progress={progress} index={index} N={totalBlocks.value}/>;
+      })}
+     
+     
+
+             
+             </Animated.View>
+
+
          </Animated.View>
 
          <View style={{
-            height:'40%',
+            height:'43%',
             width:'100%',
             backgroundColor:'#000',
             justifyContent:'space-between',

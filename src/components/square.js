@@ -8,14 +8,14 @@ import Animated, {
   withSpring,
   withTiming,Easing, color
 } from 'react-native-reanimated';  
-import {  SQUARE_SIZE } from './constants';
+import {  SQUARE_SIZE } from '../constants/constants';
  
-const Square = ({ index, progress,N }) => {
+const Square = ({ index, progress,N }) => { 
   const offsetAngle = (-2*Math.PI) / N;
   const finalAngle = offsetAngle * (N - 1 - index);
   const squareWidth=useSharedValue(10)
   const squareHeight=useSharedValue(4)
-  const blockColor=useSharedValue('white')
+  const blockColor=useSharedValue('#fff')
 
   const rotate = useDerivedValue(() => { 
       return finalAngle; 
